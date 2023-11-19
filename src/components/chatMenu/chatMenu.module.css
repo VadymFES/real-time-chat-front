@@ -1,0 +1,87 @@
+.ChatMenu {
+    width: 353px;
+    height: 1024px;
+    flex-shrink: 0;
+    background: #ECF7FF;
+    padding-top: 24px;
+}
+
+.ChatMenuSearchInput {
+    display: flex;
+    width: 353px;
+    padding: 7px 38px 8px 20px;
+    align-items: center;
+    border: none;
+}
+
+.ChatMenuContentList {
+    list-style-type: none;
+    padding: 0;
+    /* Reset padding for the ul */
+}
+
+.ChatMenuContentListItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.roomInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.messageCount {
+    width: 24px;
+    height: 24px;
+    background: #12229D;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.ChatMenuContentListItem:hover {
+    background: #E5F0FF;
+    cursor: pointer;
+}
+
+.ChatMenuFooter {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.ChatMenuFooterUser {
+    display: flex;
+    border: none;
+    width: 353px;
+    height: 80px;
+    padding: 16px 20px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-shrink: 0;
+    background: #CAE8FF;
+}
+
+.ChatMenuFooterUserDetails {
+}
+
+
+.ChatMenuFooterUserOptions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-left: auto;
+    background: #CAE8FF;
+    border: none;
+    cursor: pointer;
+}
