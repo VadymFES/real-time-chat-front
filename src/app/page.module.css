@@ -1,4 +1,8 @@
 .main {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap:nowrap;
+}
+
+.mainContent {
+  width: 100%;
 }

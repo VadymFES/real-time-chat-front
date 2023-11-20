@@ -1,0 +1,65 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    height: 65px;
+    background: #CAE8FF;
+}
+
+.headerSearch {
+    display: flex;
+    width: 177px;
+    padding: 8px 12px;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    margin-right: 92px;
+}
+
+.chatLogout,
+.chatClose {
+    background: #CAE8FF;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.chatLogout {
+    margin-right: 16px;
+}
+
+.chatName {
+    margin: 0;
+    font-weight: bold;
+    margin-right: auto;
+}
+
+.inputSection {
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    width: 69%;
+}
+
+.inputSection textarea {
+    width: calc(100% - 50px);
+    padding: 17px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+    resize: none;
+    overflow: hidden;
+}
+
+.inputSection button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
