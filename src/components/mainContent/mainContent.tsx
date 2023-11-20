@@ -41,6 +41,13 @@ const MainContent: React.FC = () => {
     setInputValue(event.target.value);
   };
 
+  const handleEnterPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   const handleLogout = () => {
     // Logic for handling logout
   };
@@ -79,8 +86,9 @@ const MainContent: React.FC = () => {
         <textarea
           ref={textareaRef}
           placeholder="Type a message..."
-          defaultValue={inputValue}
+          value={inputValue}
           onChange={handleInputChange}
+          onKeyDown={handleEnterPress}
         />
 
         <button onClick={handleSendMessage}>
