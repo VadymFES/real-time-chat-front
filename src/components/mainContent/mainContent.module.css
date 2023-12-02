@@ -1,0 +1,28 @@
+.header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    height: 65px;
+    background: #CAE8FF;
+}
+
+.chatLogout,
+.chatClose,
+.chatMembers {
+    background: #CAE8FF;
+    border: none;
+    display: flex;
+    align-items: center;
+}
+
+.chatLogout {
+    margin: 0 16px;
+
+}
+
+.chatName {
+    margin: 0;
+    font-weight: bold;
+    margin-right: auto;
+}
+

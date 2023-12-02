@@ -18,11 +18,9 @@ const AsidePannel: React.FC<AsidePanelProps> = () => {
         </button>
 
 
-        <span className={styles.vectorDevider}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="82" height="2" viewBox="0 0 82 2" fill="none">
-            <path d="M80.5 2C81.0523 2 81.5 1.55228 81.5 1C81.5 0.447715 81.0523 0 80.5 0V2ZM0.5 2L80.5 2V0L0.5 0L0.5 2Z" fill="#233DFF" />
-          </svg>
-        </span>
+        <svg className={styles.vectorDevider} width="82" height="2" viewBox="0 0 82 1" fill="none">
+          <line x1="0" y1="0.5" x2="80" y2="0.5" stroke="#233DFF" strokeWidth="1" />
+        </svg>
 
         <button className={styles.userAvatarActive}>
           <svg xmlns="http://www.w3.org/2000/svg" width="33" height="32" viewBox="0 0 33 32" fill="none">

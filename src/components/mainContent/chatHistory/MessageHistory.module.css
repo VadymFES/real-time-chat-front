@@ -1,0 +1,27 @@
+/* chatHistory.module.css */
+
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+  padding: 10px; /* Adjust padding as needed */
+  position: relative;
+  margin: 0 auto .125rem;
+  max-height: 82vmin;
+}  
+ /* Define scrollbar styles */
+ .messageContainer::-webkit-scrollbar {
+   width: 6px; /* Set the width of the scrollbar for Webkit browsers */
+ }
+ 
+ .messageContainer::-webkit-scrollbar-thumb {
+   background-color: #888; /* Set the color of the scrollbar thumb */
+ }
+ 
+ .messageContainer::-webkit-scrollbar-track {
+   background-color: #f4f4f4; /* Set the color of the scrollbar track */
+ }
+
+
+
+

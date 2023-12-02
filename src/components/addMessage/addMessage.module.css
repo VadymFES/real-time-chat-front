@@ -1,0 +1,30 @@
+.inputSection {
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    width: 69%;
+    z-index: 1;
+}
+
+.inputSection textarea {
+    width: calc(100% - 50px);
+    padding: 17px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+    resize: none;
+    overflow: hidden;
+}
+
+.inputSection button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}

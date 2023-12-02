@@ -1,9 +1,18 @@
+'use client';
+
+import React, { useState } from 'react';
 import styles from './page.module.css';
 import AsidePannel from '../components/asidePannel/asidePannel';
-import ChatMenu from '../components/chatMenu/chatMenu';
 import MainContent from '../components/mainContent/mainContent';
+import CollapsibleChatMenu from  '../components/collapseButton/CollapseButton';
 
 export default function Home() {
+  const [isChatMenuCollapsed, setChatMenuCollapsed] = useState(false);
+
+  const toggleChatMenu = () => {
+    setChatMenuCollapsed(!isChatMenuCollapsed);
+  };
+
   return (
     <main className={styles.main}>
       {/* Aside pannel */}
@@ -12,9 +21,10 @@ export default function Home() {
       </div>
       
       {/* Chat Menu */}
-      <div className={styles.chatMenu}>
-        <ChatMenu />
-      </div>
+      <CollapsibleChatMenu
+        isCollapsed={isChatMenuCollapsed}
+        toggleChatMenu={toggleChatMenu}
+      />
       
       {/* Main Chat Content */}
       <div className={styles.mainContent}>
