@@ -4,5 +4,6 @@
 }
 
 .mainContent {
-  width: 100%;
+  flex-grow: 1; /* This allows the mainContent to fill all available space */
+  position: relative; /* Set position to relative */
 }
