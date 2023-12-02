@@ -1,0 +1,33 @@
+
+.message {
+    line-height: 1.5;
+    font-weight: 400;
+    font-size: 16px;
+    box-sizing: inherit;
+    position: relative;
+    z-index: 1;
+    margin: 0 auto .125rem;
+    user-select: none;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: bisque;
+    border-radius: 5px;
+    display: inline-block;
+    word-wrap: break-word;
+    word-break: break-all;
+    max-width: 450px;
+  }
+
+  .text {
+    word-wrap: break-word; /* Handles long words that exceed container width */
+    max-width: 450px; /* Adjust as needed */
+  }
+  
+  
+  .userAvatar {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover; /* Ensures the image covers the entire area */
+    margin-right: 10px; /* Adds spacing between avatar and message */
+  }
