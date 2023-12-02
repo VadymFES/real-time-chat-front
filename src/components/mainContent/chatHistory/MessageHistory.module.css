@@ -1,0 +1,14 @@
+/* chatHistory.module.css */
+
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+    overflow-y: auto; /* Enable vertical scrolling when content exceeds the height */
+    padding: 10px; /* Adjust padding as needed */
+    position: relative;
+    margin: 0 auto .125rem;
+    flex-wrap: wrap;
+    }
+
+
+
