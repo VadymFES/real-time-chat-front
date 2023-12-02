@@ -1,51 +1,44 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './mainContent.module.css';
-import ChatHistory from './chatHistory/chatHistory';
+import MessageHistory from './chatHistory/MessageHistory';
 import autosize from 'autosize';
+import AddMessage from '../addMessage/addMessage';
+import { v4 as uuidv4 } from 'uuid';
+
 
 interface Message {
-  id: number;
+  id: string;
   text: string;
   sender: string;
   timestamp: string;
+  userAvatar: string;
+}
+
+interface AddMessageProps {
+  inputValue: string;
+  setInputValue: (value: string) => void;
+  onAddMessage: () => void;
 }
 
 const MainContent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
-  const textareaRef = useRef(null);
 
   useEffect(() => {
-    if (textareaRef.current) {
-      autosize(textareaRef.current);
-    }
+    autosize(document.querySelectorAll('textarea'));
   }, []);
 
-
-  const handleSendMessage = () => {
-    if (inputValue.trim() !== '') {
-      const newMessage: Message = {
-        id: messages.length + 1,
-        text: inputValue,
-        sender: 'User', // Replace with the sender's name or ID
-        timestamp: new Date().toLocaleTimeString(), // Replace with the actual timestamp logic
-      };
-      setMessages([...messages, newMessage]);
-      setInputValue('');
-    }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  const handleEnterPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      handleSendMessage();
-    }
+  const handleSendMessage = (newMessageText: string) => {
+    const newMessage: Message = {
+      id: uuidv4(), // This will assign a unique ID to each message
+      text: newMessageText,
+      sender: 'User', // Replace with the sender's name or ID
+      timestamp: new Date().toLocaleTimeString(), // Replace with the actual timestamp logic
+      userAvatar: 'https://placekitten.com/200/200', // Replace with the sender's avatar URL
+    };
+    setMessages([...messages, newMessage]);
   };
 
   const handleLogout = () => {
@@ -56,6 +49,10 @@ const MainContent: React.FC = () => {
     // Logic for handling chat close
   };
 
+  const handleShowUsers = () => {
+    // Logic for showing the list of users
+  };
+  
   return (
     <div className={styles.chatContainer}>
 
@@ -63,7 +60,13 @@ const MainContent: React.FC = () => {
 
         <p className={styles.chatName}>Chat Name</p>
 
-        <input className={styles.headerSearch} type="text" placeholder="Search" />
+        <button className={styles.chatMembers} onClick={handleShowUsers}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M1.46447 15.4645C2.40215 14.5268 3.67392 14 5 14H13C14.3261 14 15.5979 14.5268 16.5355 15.4645C17.4732 16.4021 18 17.6739 18 19V21C18 21.5523 17.5523 22 17 22C16.4477 22 16 21.5523 16 21V19C16 18.2044 15.6839 17.4413 15.1213 16.8787C14.5587 16.3161 13.7956 16 13 16H5C4.20435 16 3.44129 16.3161 2.87868 16.8787C2.31607 17.4413 2 18.2044 2 19V21C2 21.5523 1.55228 22 1 22C0.447715 22 0 21.5523 0 21V19C0 17.6739 0.526784 16.4021 1.46447 15.4645Z" fill="#404040" />
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9 4C7.34315 4 6 5.34315 6 7C6 8.65685 7.34315 10 9 10C10.6569 10 12 8.65685 12 7C12 5.34315 10.6569 4 9 4ZM4 7C4 4.23858 6.23858 2 9 2C11.7614 2 14 4.23858 14 7C14 9.76142 11.7614 12 9 12C6.23858 12 4 9.76142 4 7Z" fill="#404040" />
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0318 14.88C19.1698 14.3453 19.7153 14.0237 20.25 14.1618C21.3227 14.4387 22.273 15.0641 22.9517 15.9397C23.6304 16.8152 23.9992 17.8914 24 18.9993L24 21C24 21.5523 23.5523 22 23 22C22.4477 22 22 21.5523 22 21L22 19.0007C22 19.0006 22 19.0008 22 19.0007C21.9994 18.3361 21.7782 17.6902 21.371 17.165C20.9638 16.6396 20.3936 16.2644 19.75 16.0982C19.2153 15.9602 18.8937 15.4148 19.0318 14.88Z" fill="#404040" />
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0312 2.88196C15.1682 2.34694 15.713 2.02426 16.248 2.16125C17.3236 2.43663 18.2768 3.06213 18.9576 3.93914C19.6383 4.81615 20.0078 5.89479 20.0078 7.005C20.0078 8.11521 19.6383 9.19385 18.9576 10.0709C18.2768 10.9479 17.3236 11.5734 16.248 11.8488C15.713 11.9857 15.1682 11.6631 15.0312 11.128C14.8943 10.593 15.2169 10.0482 15.752 9.91125C16.3973 9.74603 16.9692 9.37073 17.3777 8.84452C17.7861 8.31831 18.0078 7.67113 18.0078 7.005C18.0078 6.33887 17.7861 5.69169 17.3777 5.16548C16.9692 4.63928 16.3973 4.26398 15.752 4.09875C15.2169 3.96176 14.8943 3.41699 15.0312 2.88196Z" fill="#404040" />
+        </svg>
+        </button>
         <button className={styles.chatLogout} onClick={handleLogout}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M5 4C4.73478 4 4.48043 4.10536 4.29289 4.29289C4.10536 4.48043 4 4.73478 4 5V19C4 19.2652 4.10536 19.5196 4.29289 19.7071C4.48043 19.8946 4.73478 20 5 20H9C9.55228 20 10 20.4477 10 21C10 21.5523 9.55228 22 9 22H5C4.20435 22 3.44129 21.6839 2.87868 21.1213C2.31607 20.5587 2 19.7957 2 19V5C2 4.20435 2.31607 3.44129 2.87868 2.87868C3.44129 2.31607 4.20435 2 5 2H9C9.55228 2 10 2.44772 10 3C10 3.55228 9.55228 4 9 4H5Z" fill="#050A30" />
@@ -80,25 +83,13 @@ const MainContent: React.FC = () => {
         </button>
       </div>
 
-        <ChatHistory messages={messages} />
+    <MessageHistory messages={messages} />
 
-      <div className={styles.inputSection}>
-        <textarea
-          ref={textareaRef}
-          placeholder="Type a message..."
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleEnterPress}
-        />
+    <AddMessage 
+        onAddMessage={handleSendMessage} />
 
-        <button onClick={handleSendMessage}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M28.3839 1.61612C28.872 2.10427 28.872 2.89573 28.3839 3.38388L14.6339 17.1339C14.1457 17.622 13.3543 17.622 12.8661 17.1339C12.378 16.6457 12.378 15.8543 12.8661 15.3661L26.6161 1.61612C27.1043 1.12796 27.8957 1.12796 28.3839 1.61612Z" fill="#12229D" />
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M28.3839 1.61609C28.7234 1.95564 28.8385 2.45968 28.6798 2.91291L19.9298 27.9129C19.7605 28.3967 19.3131 28.728 18.801 28.7489C18.2889 28.7698 17.8159 28.476 17.6077 28.0076L12.803 17.197L1.99233 12.3922C1.52398 12.1841 1.23015 11.7111 1.25105 11.199C1.27194 10.6869 1.60332 10.2395 2.08707 10.0702L27.0871 1.32015C27.5403 1.16152 28.0443 1.27654 28.3839 1.61609ZM5.88885 11.3882L14.2577 15.1077C14.5405 15.2334 14.7666 15.4595 14.8923 15.7423L18.6118 24.1111L25.4625 4.53744L5.88885 11.3882Z" fill="#12229D" />
-          </svg>
-        </button>
-      </div>
-    </div>
+
+</div>
   );
 };
 
