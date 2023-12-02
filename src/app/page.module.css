@@ -1,6 +1,6 @@
 .main {
   display: flex;
-  flex-wrap:nowrap;
+  /* flex-wrap:nowrap; */
 }
 
 .mainContent {
