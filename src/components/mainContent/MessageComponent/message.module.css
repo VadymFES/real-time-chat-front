@@ -1,33 +1,58 @@
+/* message.module.css */
 
+/* Styles for the container of the message */
 .message {
-    line-height: 1.5;
-    font-weight: 400;
-    font-size: 16px;
-    box-sizing: inherit;
-    position: relative;
-    z-index: 1;
-    margin: 0 auto .125rem;
-    user-select: none;
     display: flex;
-    flex-wrap: wrap;
-    background-color: bisque;
-    border-radius: 5px;
-    display: inline-block;
+    margin-bottom: 10px;
     word-wrap: break-word;
-    word-break: break-all;
-    max-width: 450px;
   }
-
+  
+  /* Styles for the user's message container */
+  .userMessage {
+    justify-content: flex-end;
+  }
+  
+  /* Styles for the other user's message container */
+  .otherMessage {
+    justify-content: flex-start;
+  }
+  
+  /* Styles for the background box */
+  .messageContent {
+    max-width: 450px; /* Adjust the width as needed */
+    min-width: 80px;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #e2e2e2; /* Change the background color as desired */
+    position: relative;
+  }
+  
+  /* Styles for the sender's name */
+  .sender {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  /* Styles for the message text */
   .text {
-    word-wrap: break-word; /* Handles long words that exceed container width */
-    max-width: 450px; /* Adjust as needed */
+    margin-bottom: 8px;
   }
   
+  /* Styles for the timestamp */
+  .timestamp {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    font-size: 12px;
+    color: #666;
+  }
   
+  /* Styles for the user avatar */
   .userAvatar {
     width: 50px; /* Adjust as needed */
     height: 50px; /* Adjust as needed */
     border-radius: 50%; /* Makes the image round */
     object-fit: cover; /* Ensures the image covers the entire area */
-    margin-right: 10px; /* Adds spacing between avatar and message */
+    margin: 0 10px; /* Adds spacing between avatar and message */
   }
+  
