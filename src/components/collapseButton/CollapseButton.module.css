@@ -1,0 +1,34 @@
+.chatMenu {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: ease-in-out 0.3s;
+  }
+  
+  .collapseButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 18px;
+    height: 100%;
+    background-color: #CAE8FF;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding-top: 48vh;
+    transition: transform 0.3s ease;
+  }
+  
+  .arrowIcon {
+    font-size: 24px; 
+  }
+
+  .chatMenuContent {
+  transition: opacity 0.3s ease; /* Added transition effect */
+}
+
+.collapsedContent {
+  opacity: 0; /* Hide content when collapsed */
+  pointer-events: none; /* Disable pointer events when collapsed */
+}
