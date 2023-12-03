@@ -1,6 +1,6 @@
 .chatContainer {
     display: grid;
-    grid-template-columns: auto 200px;
+    grid-template-columns: auto 300px;
     grid-template-rows: 65px auto 70px;
     grid-column-gap: 0px;
     grid-row-gap: 0px;
@@ -25,6 +25,9 @@
 
 .AddMessage {
     grid-area: 3 / 1 / 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
