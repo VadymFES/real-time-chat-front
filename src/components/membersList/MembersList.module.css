@@ -1,0 +1,79 @@
+.title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    min-width: 100px;
+  }
+
+.membersList {
+    position: absolute;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: #f0f0f0;
+    height: 100vh;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    word-wrap: break-word;
+    overflow-y: auto;
+  }
+  
+  .member {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc; /* Placeholder for avatar background */
+    margin-right: 10px;
+  }
+
+  .active {
+  }
+  
+  /* Style for the "Active" badge */
+  .activeBadge {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: green;
+    margin-right: 5px;
+  }
+  
+
+  .nameContainer {
+    width: 170px; /* Adjust based on your needs */
+    overflow: hidden;
+  }
+  
+  .name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+  
+  .scrollText {
+    text-overflow: clip;
+    animation: scroll 5s linear infinite;
+    white-space: nowrap;
+  }
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  

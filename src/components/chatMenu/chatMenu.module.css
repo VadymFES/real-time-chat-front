@@ -4,6 +4,7 @@
     flex-shrink: 0;
     background: #ECF7FF;
     padding-top: 24px;
+    padding-right: 10px;
 }
 
 .ChatMenuSearchInput {

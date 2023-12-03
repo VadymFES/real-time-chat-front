@@ -1,10 +1,35 @@
+.chatContainer {
+    display: grid;
+    grid-template-columns: auto 300px;
+    grid-template-rows: 65px auto 70px;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+
 .header {
     display: flex;
     align-items: center;
     padding: 10px 20px;
     height: 65px;
     background: #CAE8FF;
+    grid-area: 1 / 1 / 2 / 3;
 }
+
+.MembersList {
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+.MessageHistory {
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+.AddMessage {
+    grid-area: 3 / 1 / 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 .chatLogout,
 .chatClose,
@@ -13,6 +38,7 @@
     border: none;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .chatLogout {
@@ -25,4 +51,3 @@
     font-weight: bold;
     margin-right: auto;
 }
-
