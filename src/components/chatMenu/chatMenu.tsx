@@ -1,3 +1,5 @@
+"use client";
+
 import styles from './chatMenu.module.css';
 
 interface ChatMenuProps {
