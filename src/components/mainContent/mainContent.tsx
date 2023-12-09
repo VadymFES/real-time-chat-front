@@ -8,7 +8,6 @@ import AddMessage from '../addMessage/addMessage';
 import { v4 as uuidv4 } from 'uuid';
 import MembersList from '../membersList/MembersList';
 
-
 interface Message {
   id: string;
   text: string;
@@ -19,6 +18,8 @@ interface Message {
 
 const MainContent: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isMembersListOpen, setIsMembersListOpen] = useState(true);
+
 
 
   const initialMessages: Message[] = [
@@ -27,7 +28,7 @@ const MainContent: React.FC = () => {
       text: 'Hello, how are you?',
       sender: 'User',
       timestamp: '15:30',
-      userAvatar: 'https://placekitten.com/200/200',
+      userAvatar: 'https://placekitten.com/200/300',
     },
     {
       id: uuidv4(),
@@ -41,7 +42,7 @@ const MainContent: React.FC = () => {
       text: 'I am good, thanks!',
       sender: 'User',
       timestamp: '15:32',
-      userAvatar: 'https://placekitten.com/200/200',
+      userAvatar: 'https://placekitten.com/200/300',
     },
   ];
 
@@ -65,14 +66,16 @@ const MainContent: React.FC = () => {
     setMessages([...messages, newMessage]);
   };
 
+  const toggleMembersList = () => {
+    setIsMembersListOpen(!isMembersListOpen);
+  };
+
   return (
-    <div className={styles.chatContainer}>
-
+    <div className={styles.chatContainer} >
       <div className={styles.header}>
-
         <p className={styles.chatName}>Chat Name</p>
-
-        <button className={styles.chatMembers}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <button className={styles.chatMembers} onClick={toggleMembersList}>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M1.46447 15.4645C2.40215 14.5268 3.67392 14 5 14H13C14.3261 14 15.5979 14.5268 16.5355 15.4645C17.4732 16.4021 18 17.6739 18 19V21C18 21.5523 17.5523 22 17 22C16.4477 22 16 21.5523 16 21V19C16 18.2044 15.6839 17.4413 15.1213 16.8787C14.5587 16.3161 13.7956 16 13 16H5C4.20435 16 3.44129 16.3161 2.87868 16.8787C2.31607 17.4413 2 18.2044 2 19V21C2 21.5523 1.55228 22 1 22C0.447715 22 0 21.5523 0 21V19C0 17.6739 0.526784 16.4021 1.46447 15.4645Z" fill="#404040" />
           <path fill-rule="evenodd" clip-rule="evenodd" d="M9 4C7.34315 4 6 5.34315 6 7C6 8.65685 7.34315 10 9 10C10.6569 10 12 8.65685 12 7C12 5.34315 10.6569 4 9 4ZM4 7C4 4.23858 6.23858 2 9 2C11.7614 2 14 4.23858 14 7C14 9.76142 11.7614 12 9 12C6.23858 12 4 9.76142 4 7Z" fill="#404040" />
           <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0318 14.88C19.1698 14.3453 19.7153 14.0237 20.25 14.1618C21.3227 14.4387 22.273 15.0641 22.9517 15.9397C23.6304 16.8152 23.9992 17.8914 24 18.9993L24 21C24 21.5523 23.5523 22 23 22C22.4477 22 22 21.5523 22 21L22 19.0007C22 19.0006 22 19.0008 22 19.0007C21.9994 18.3361 21.7782 17.6902 21.371 17.165C20.9638 16.6396 20.3936 16.2644 19.75 16.0982C19.2153 15.9602 18.8937 15.4148 19.0318 14.88Z" fill="#404040" />
@@ -99,9 +102,12 @@ const MainContent: React.FC = () => {
         <MessageHistory messages={initialMessages} />
       </section>
 
+      {/* Pass isMembersListOpen as prop to MembersList */}
       <section className={styles.MembersList}>
-          <MembersList />
-        </section>
+        <MembersList isOpen={isMembersListOpen} />
+      </section>
+
+
 
       <section className={styles.AddMessage}>
 
