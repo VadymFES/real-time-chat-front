@@ -1,16 +1,16 @@
 .inputSection {
     position: fixed;
+    left: 0;
     bottom: 0;
-    background-color: #fff;
+    background-color: #f0f0f0;
     padding: 10px;
     display: flex;
-    align-items: center;
-    width: 69%;
+    width: 77.3rem;
     z-index: 1;
 }
 
 .inputSection textarea {
-    width: calc(100% - 50px);
+    width: 100%;
     padding: 17px;
     border: 1px solid #ccc;
     border-radius: 4px;

@@ -1,9 +1,13 @@
 .main {
   display: flex;
-  /* flex-wrap:nowrap; */
+  flex-direction: column; /* Stack items vertically */
+}
+
+.roomSelection {
+  /* Add styles for the room selection tabs */
 }
 
 .mainContent {
-  flex-grow: 1; /* This allows the mainContent to fill all available space */
-  position: relative; /* Set position to relative */
+  flex-grow: 1; /* Allow mainContent to fill available space */
+  position: relative; /* Keep position as relative */
 }
