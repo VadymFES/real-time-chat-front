@@ -1,0 +1,49 @@
+.tabContainer {
+    display: flex;
+    justify-content:flex-start;
+    flex-direction: column; /* Stack items vertically */
+    background-color: #f0f0f0;
+  }
+  
+  .tab {
+    padding: 6px 20px;
+    border: 1px solid #919191;
+    background-color: #d0d0d0;
+    cursor: pointer;
+    border-radius: 12px 12px 0 0;
+    border: none;
+  }
+  
+  .activeTab {
+    border-bottom: none;
+    background-color: white;
+    font-weight: bold;
+  }
+
+  .chatName {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
+    font-size: 18px;
+  }
+
+  .supportSettings{
+    display: flex;
+    gap : 24px;
+    align-items: flex-start;
+    padding: 8px 0 8px 50px;
+  }
+
+  .settings, .support {
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px, 4px, 2px, 4px;
+    
+
+  }
+  .roomButtons {
+    padding-top: 8px;
+    margin-left: 5px;
+  }
