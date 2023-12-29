@@ -2,51 +2,52 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
-import AsidePannel from '../components/asidePannel/asidePannel';
 import MainContent from '../components/mainContent/mainContent';
-import CollapsibleChatMenu from '../components/collapseButton/CollapseButton';
 import RegistrationPopup from '../components/popUpRegistration/RegistrationPopup';
+import UserContext from '../contexts/UserContext';
+import RoomSelection from '../components/roomSelection/RoomSelection';
 
 export default function Home() {
-  const [isChatMenuCollapsed, setChatMenuCollapsed] = useState(false);
+  const [username, setUsername] = useState('');
   const [showRegistrationPopup, setShowRegistrationPopup] = useState(false);
-  const [hasVisitedChat, setHasVisitedChat] = useState(false); // This keeps track of whether the user has visited the chat
+  const [selectedRoom, setSelectedRoom] = useState('');
 
-  const toggleChatMenu = () => {
-    setChatMenuCollapsed(!isChatMenuCollapsed);
-  };
 
   useEffect(() => {
-    // Check if the user has visited the chat before showing the registration pop-up
-    if (!hasVisitedChat) {
-      setShowRegistrationPopup(true);
-      setHasVisitedChat(true); // Update the state to indicate that the user has visited the chat
+    // Retrieve the username from localStorage
+    const storedUsername = localStorage.getItem('registeredUsername');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    } else {
+      setShowRegistrationPopup(true); // Show the registration popup if no username is stored
     }
-  }, [hasVisitedChat]);
+  }, []);
 
   const closeRegistrationPopup = () => {
     setShowRegistrationPopup(false);
   };
 
+  useEffect(() => {
+    // If username is set, store it in localStorage and close the registration popup
+    if (username) {
+      localStorage.setItem('registeredUsername', username);
+      setShowRegistrationPopup(false);
+    }
+  }, [username]);
+
   return (
+    <UserContext.Provider value={{ username, setUsername }}>
     <main className={styles.main}>
-      {/* Aside panel */}
-      <div className={styles.aside}>
-        <AsidePannel />
-      </div>
 
-      {/* Chat Menu */}
-      <CollapsibleChatMenu isCollapsed={isChatMenuCollapsed} toggleChatMenu={toggleChatMenu} />
+      {showRegistrationPopup && <RegistrationPopup onClose={closeRegistrationPopup} />}
+      
+      <RoomSelection onSelectRoom={setSelectedRoom} selectedRoom={selectedRoom} />
 
-      {/* Main Chat Content */}
       <div className={styles.mainContent}>
-        <MainContent />
+        {selectedRoom && <MainContent selectedRoom={selectedRoom} />}
       </div>
 
-      {/* Registration Popup */}
-      {showRegistrationPopup && (
-        <RegistrationPopup onClose={closeRegistrationPopup} />
-      )}
     </main>
+  </UserContext.Provider>
   );
 }
