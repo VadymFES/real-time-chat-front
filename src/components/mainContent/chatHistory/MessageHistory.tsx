@@ -19,7 +19,7 @@ const MessageHistory: React.FC<MessageHistoryProps> = ({ messages }) => {
   return (
     <section className={styles.messageContainer} ref={messageContainerRef}>
       {messages.map((message) => ( 
-        <Message key={message.id} message={message} />
+        <Message key={message.id} message={message} currentUser={''} />
       ))}
     </section>
   );
