@@ -11,14 +11,15 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [registrationError, setRegistrationError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { setUsername: setGlobalUsername } = useContext(UserContext);
+  const { setUsername: setGlobalUsername, setUserId: setGlobalUserId } = useContext(UserContext);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
     setRegistrationError(null);
   };
-
-  const handleRegistration = async () => {
+  
+  const handleRegistration = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (!username) {
       setRegistrationError('Please enter your name.');
       return;
@@ -26,14 +27,23 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
   
     try {
       setIsLoading(true);
-      // Step 1: Create the user
-      const userCreationResponse = await axios.post(`http://51.20.108.68/guests/create`, { name: username });
+      // Register the user
+      const postResponse = await axios.post(`http://51.20.108.68/guests/create`, { name: username }, { withCredentials: true });
+      console.log('Registration Response:', postResponse.data); 
   
+      // Access the ID using the correct field
+      const userId = postResponse.data.id; 
       setGlobalUsername(username);
-      onClose(); // Close the registration popup
-    } catch (error) {
-      console.error(error);
-      setRegistrationError('Registration failed. Please try again.');
+      setGlobalUserId(userId);
+  
+      // Save to local storage
+      localStorage.setItem('username', username);
+      localStorage.setItem('userId', userId.toString());
+  
+      onClose();
+    } catch (error: any) {
+      console.error('Registration Error:', error); 
+      setRegistrationError(error.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -42,20 +52,23 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
   
   
 
+
+  
+
   return (
     <>
       <div className={styles.backdrop} />
       <div className={styles.registrationPopup}>
         {isLoading ? <p>Loading...</p> : (
-          <>
+          <form onSubmit={handleRegistration}>
             <h1>Hi there!</h1>
             <h2>Type your name</h2>
-            <label htmlFor="username" className={styles.label}>
+            <label htmlFor="usernameInput" className={styles.label}>
               Your Name:
             </label>
             <input
               type="text"
-              id="username"
+              id="usernameInput"
               placeholder="Username"
               value={username}
               onChange={handleUsernameChange}
@@ -63,10 +76,10 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
             {registrationError && (
               <p className={styles.error}>{registrationError}</p>
             )}
-            <button onClick={handleRegistration} className={styles.button_go}>
+            <button type="submit" className={styles.button_go}>
               Let's go
             </button>
-          </>
+          </form>
         )}
       </div>
     </>
