@@ -12,32 +12,39 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState('');
   const [showRegistrationPopup, setShowRegistrationPopup] = useState(!localStorage.getItem('username') || !localStorage.getItem('userId'));
-  const [selectedRoom, setSelectedRoom] = useState('');
+  const [selectedRoomName, setSelectedRoomName] = useState('');
+  const [selectedRoomId, setSelectedRoomId] = useState('');
 
   useEffect(() => {
-    // Retrieve the username, userId, and selectedRoom from localStorage
+    // Retrieve the username, userId, selectedRoomName, and selectedRoomId from localStorage
     const storedUsername = localStorage.getItem('username');
     const storedUserId = localStorage.getItem('userId');
-    const storedSelectedRoom = localStorage.getItem('selectedRoom');
+    const storedSelectedRoomName = localStorage.getItem('selectedRoomName');
+    const storedSelectedRoomId = localStorage.getItem('selectedRoomId');
 
     if (storedUsername && storedUserId) {
       setUsername(storedUsername);
       setUserId(storedUserId);
     } else {
-      setShowRegistrationPopup(true); // Show the registration popup if no user data is found
-      setSelectedRoom(''); // Reset the selected room when user is not logged in
-      localStorage.removeItem('selectedRoom'); // Clear the selected room from local storage
+      setShowRegistrationPopup(true); // Show registration popup if no user data
+      setSelectedRoomName('');
+      setSelectedRoomId('');
+      localStorage.removeItem('selectedRoomName');
+      localStorage.removeItem('selectedRoomId');
     }
 
-    if (storedSelectedRoom) {
-      setSelectedRoom(storedSelectedRoom);
+    if (storedSelectedRoomName && storedSelectedRoomId) {
+      setSelectedRoomName(storedSelectedRoomName);
+      setSelectedRoomId(storedSelectedRoomId);
     }
   }, []);
 
   const closeRegistrationPopup = () => {
     setShowRegistrationPopup(false);
-    setSelectedRoom(''); 
-    localStorage.removeItem('selectedRoom'); 
+    setSelectedRoomName(''); 
+    setSelectedRoomId('');
+    localStorage.removeItem('selectedRoomName');
+    localStorage.removeItem('selectedRoomId');
   };
 
   const handleRoomSelection = async (roomName: string, roomId: string) => {
@@ -51,8 +58,10 @@ export default function Home() {
       }
 
       await axios.post(`http://51.20.108.68/rooms/${parsedRoomId}/join?guest_id=${parsedUserId}`);
-      setSelectedRoom(roomName);
-      localStorage.setItem('selectedRoom', roomName);
+      setSelectedRoomName(roomName);
+      setSelectedRoomId(roomId);
+      localStorage.setItem('selectedRoomName', roomName);
+      localStorage.setItem('selectedRoomId', roomId);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error joining the room:', error.response?.data || error.message);
@@ -66,9 +75,9 @@ export default function Home() {
     <UserContext.Provider value={{ username, setUsername, setUserId, userId }}>
       <main className={styles.main}>
         {showRegistrationPopup && <RegistrationPopup onClose={closeRegistrationPopup} />}
-        <RoomSelection onSelectRoom={handleRoomSelection} selectedRoom={selectedRoom} />
+        <RoomSelection onSelectRoom={handleRoomSelection} selectedRoom={selectedRoomName} />
         <div className={styles.mainContent}>
-          {selectedRoom && <MainContent selectedRoom={selectedRoom} />}
+          {selectedRoomId && <MainContent selectedRoomId={selectedRoomId} selectedRoomName={selectedRoomName} />}
         </div>
       </main>
     </UserContext.Provider>
