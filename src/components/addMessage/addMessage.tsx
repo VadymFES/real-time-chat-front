@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import styles from "./addMessage.module.css";
 
 interface AddMessageProps {
-  onAddMessage: (message: string) => void;
+  onAddMessage: (message: string, user: string) => void;
+  currentUser: string;
 }
 
-export default function AddMessage({ onAddMessage }: AddMessageProps): JSX.Element {
+export default function AddMessage({ onAddMessage, currentUser }: AddMessageProps): JSX.Element {
   const [message, setMessage] = useState("");
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       if (message.trim()) {
-        onAddMessage(message);
+        onAddMessage(message, currentUser); // Pass currentUser along with the message
         setMessage("");
+
+        console.log("Message sent:", message);
+        console.log("User:", currentUser);
       } else {
         alert("Please enter a message");
       }
@@ -22,8 +26,11 @@ export default function AddMessage({ onAddMessage }: AddMessageProps): JSX.Eleme
 
   const handleButtonClick = () => {
     if (message.trim()) {
-      onAddMessage(message);
+      onAddMessage(message, currentUser); // Pass currentUser along with the message
       setMessage("");
+
+      console.log("Message sent:", message);
+      console.log("User:", currentUser);
     } else {
       alert("Please enter a message");
     }
@@ -32,7 +39,7 @@ export default function AddMessage({ onAddMessage }: AddMessageProps): JSX.Eleme
   return (
     <section className={styles.inputSection}>
       <textarea
-        placeholder="Type a message..."
+        placeholder={`Message as ${currentUser}...`} // Display the current user's name or identifier as a placeholder
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={handleKeyDown}

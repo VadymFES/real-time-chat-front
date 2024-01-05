@@ -19,6 +19,21 @@
     margin-left: auto;
     word-wrap: break-word;
     overflow-y: auto;
+    transition: opacity 0.3s ease-in-out, display 0s linear 0.3s; /* Apply transition on opacity */
+    opacity: 0; /* Hide the element initially */
+    
+  }
+
+  .membersList.unvisible {
+    opacity: 1; /* Show the component when 'visible' class is applied */
+    display: flex;  
+  } 
+  
+
+  .centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   .member {

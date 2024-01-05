@@ -35,11 +35,14 @@ const Member: React.FC<MemberProps> = ({ name, isActive }) => {
   );
 };
 
-interface MembersListProps {}
+interface MembersListProps {
+  isOpen: boolean;
 
-const MembersList: React.FC<MembersListProps> = ({}) => {
-  return (
-    <section className={styles.membersList}>
+}
+
+const MembersList: React.FC<MembersListProps> = ({ isOpen }) => {
+    return (
+    <section className={`${styles.membersList} ${isOpen ? styles.unvisible : ''}`}>
       <div className={styles.title}>Members</div>
       <Member name="John Doeklnnnnnnnnnnnnnnnnnnnnnn" isActive={true} />
       <Member name="Jane Doe" isActive={true} />
