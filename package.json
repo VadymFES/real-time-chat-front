@@ -2,6 +2,7 @@
   "name": "real-time-chat-front",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://51.20.108.68",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
