@@ -17,7 +17,7 @@ interface Message {
   timestamp: string;
 }
 
-const MainContent: React.FC<{ selectedRoom: string }> = ({ selectedRoom }) => {
+const MainContent: React.FC<{ selectedRoomId: string, selectedRoomName: string }> = ({ selectedRoomId, selectedRoomName }) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const { username } = useContext(UserContext);
@@ -28,12 +28,12 @@ const MainContent: React.FC<{ selectedRoom: string }> = ({ selectedRoom }) => {
 
     // Only load messages and members list if a room is selected
   useEffect(() => {
-    if (selectedRoom) {
+    if (selectedRoomId) {
       // Load messages for the selected room
       // Load members list for the selected room
       // This is a placeholder, replace it with your actual data fetching logic
     }
-  }, [selectedRoom]);
+  }, [selectedRoomId]);
 
   const handleSendMessage = (newMessageText: string) => {
     const currentTime = new Date();
@@ -55,17 +55,17 @@ const MainContent: React.FC<{ selectedRoom: string }> = ({ selectedRoom }) => {
   return (
     <div className={styles.chatContainer} >
       <div className={styles.header}>
-        <p className={styles.chatName}>{selectedRoom ? `Chat Name - ${selectedRoom}` : 'Select a Room'}</p>
+        <p className={styles.chatName}>{`Chat Name - ${selectedRoomName}`}</p>
       </div>
 
-      {selectedRoom && (
+      {selectedRoomId && (
         <>
           <section className={styles.MessageHistory}>
             <MessageHistory messages={messages} />
           </section>
 
           <section className={styles.MembersList}>
-            <MembersList />
+          <MembersList selectedRoomId={selectedRoomId} />
           </section>
 
           <section className={styles.AddMessage}>
