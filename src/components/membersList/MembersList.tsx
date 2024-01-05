@@ -22,7 +22,7 @@ const Member: React.FC<MemberProps> = ({ name, isActiveSession }) => {
     <div className={`${styles.member} ${isActiveSession ? styles.active : ''}`}>
       {isActiveSession && <div className={styles.activeBadge} />}
       <div className={styles.avatar}>
-        <img src="/avatar.png" alt="" />
+        <img src="" alt="" />
         </div>
       <div
         className={styles.nameContainer}
@@ -39,33 +39,33 @@ const Member: React.FC<MemberProps> = ({ name, isActiveSession }) => {
   );
 };
 
-interface MembersListProps {}
+interface MembersListProps {
+  selectedRoomId: string;
+}
 
-const MembersList: React.FC<MembersListProps> = ({}) => {
+const MembersList: React.FC<MembersListProps> = ({ selectedRoomId }) => {
   const [members, setMembers] = useState<any[]>([]); // Assuming the structure of members fetched
 
   const fetchMembers = async () => {
-    try {
-      const response = await axios.get('http://51.20.108.68/guests');
-      if (response && response.data) {
-        // Assuming the response.data is an array of members
-        setMembers(response.data);
+    const roomId = parseInt(selectedRoomId, 10); // Convert the room ID to an integer
+    if (!isNaN(roomId)) {
+      try {
+        const response = await axios.get(`http://51.20.108.68/rooms/${roomId}/users`);
+        if (response && response.data) {
+          // Assuming the response.data is an array of members
+          setMembers(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching members:', error);
       }
-    } catch (error) {
-      console.error('Error fetching members:', error);
     }
   };
 
   useEffect(() => {
-    // Fetch members initially
     fetchMembers();
-
-    // Set up interval to fetch members periodically (every 5 seconds in this example)
     const intervalId = setInterval(fetchMembers, 5000);
-
-    // Cleanup function to clear interval on component unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [selectedRoomId]);
 
   return (
     <section className={styles.membersList}>
