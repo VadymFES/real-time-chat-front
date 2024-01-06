@@ -11,7 +11,7 @@ interface Room {
   id: string;
   name: string;
   description: string;
-  created_at: string; // Adjust the types based on your actual API response
+  created_at: string; 
 }
 
 const RoomSelection = ({ onSelectRoom, selectedRoom }: RoomSelectionProps) => {
@@ -21,7 +21,7 @@ const RoomSelection = ({ onSelectRoom, selectedRoom }: RoomSelectionProps) => {
     fetch('http://51.20.108.68/rooms/') 
       .then(response => response.json())
       .then(data => {
-        setRooms(data); // Assuming data is an array of Room objects
+        setRooms(data); 
       })
       .catch(error => {
         console.error('Error fetching rooms:', error);

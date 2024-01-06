@@ -52,7 +52,6 @@ const MembersList: React.FC<MembersListProps> = ({ selectedRoomId }) => {
       try {
         const response = await axios.get(`http://51.20.108.68/rooms/${roomId}/users`);
         if (response && response.data) {
-          // Assuming the response.data is an array of members
           setMembers(response.data);
         }
       } catch (error) {
@@ -74,7 +73,7 @@ const MembersList: React.FC<MembersListProps> = ({ selectedRoomId }) => {
         <Member
           key={index}
           name={member.name}
-          isActiveSession={member.isActive} // Assuming member object contains an 'isActive' property
+          isActiveSession={member.isActive} 
         />
       ))}
     </section>

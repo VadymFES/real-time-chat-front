@@ -24,19 +24,19 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
       setRegistrationError('Please enter your name.');
       return;
     }
-  
+    
     try {
       setIsLoading(true);
-      // Register the user
       const postResponse = await axios.post(`http://51.20.108.68/guests/create`, { name: username }, { withCredentials: true });
       console.log('Registration Response:', postResponse.data); 
+      console.log('Headers:', postResponse.headers);
+
   
-      // Access the ID using the correct field
       const userId = postResponse.data.id; 
       setGlobalUsername(username);
       setGlobalUserId(userId);
   
-      // Save to local storage
+
       localStorage.setItem('username', username);
       localStorage.setItem('userId', userId.toString());
   

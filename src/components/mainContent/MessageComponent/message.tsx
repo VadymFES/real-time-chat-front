@@ -13,17 +13,14 @@ interface MessageProps {
   currentUser: string;
 }
 
-const userColors: { [key: string]: string } = {}; // Dictionary to store user colors
+const userColors: { [key: string]: string } = {}; 
 
 const getRandomColor = (): string => {
-  // Generate a random color in hexadecimal format
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 };
 
 const getUserColor = (username: string): string => {
-  // Check if the user already has a color assigned
   if (!userColors[username]) {
-    // If not, generate a random color and assign it
     userColors[username] = getRandomColor();
   }
 
