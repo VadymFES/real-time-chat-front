@@ -1,49 +1,53 @@
 .tabContainer {
-    display: flex;
-    justify-content:flex-start;
-    flex-direction: column; /* Stack items vertically */
-    background-color: #f0f0f0;
-  }
-  
-  .tab {
-    padding: 6px 20px;
-    border: 1px solid #919191;
-    background-color: #d0d0d0;
-    cursor: pointer;
-    border-radius: 12px 12px 0 0;
-    border: none;
-  }
-  
-  .activeTab {
-    border-bottom: none;
-    background-color: white;
-    font-weight: bold;
-  }
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column; /* Stack items vertically */
+  background-color: #f0f0f0;
+  padding-bottom: 5px;
+}
 
-  .chatName {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 8px;
-    font-size: 18px;
-  }
+.tab {
+  padding: 6px 16px;
+  border: 1px solid #919191;
+  background-color: #d0d0d0;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+}
 
-  .supportSettings{
-    display: flex;
-    gap : 24px;
-    align-items: flex-start;
-    padding: 8px 0 8px 50px;
-  }
+.roundedTabs {
+  border-radius: 12px 12px 0 0; /* Rounded corners only on top */
+}
 
-  .settings, .support {
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 2px, 4px, 2px, 4px;
-    
+.activeTab {
+  border-bottom: none;
+  background-color: rgb(236, 234, 234);
+  font-weight: bold;
+}
 
-  }
-  .roomButtons {
-    padding-top: 8px;
-    margin-left: 5px;
-  }
+.chatName {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 8px;
+  font-size: 18px;
+}
+
+.supportSettings {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 8px 0 8px 50px;
+}
+
+.settings, .support {
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 4px 2px 4px;
+}
+
+.roomButtons {
+  padding-top: 8px;
+  margin-left: 15px;
+}
