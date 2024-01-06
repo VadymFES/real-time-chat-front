@@ -1,13 +1,24 @@
 .main {
   display: flex;
   flex-direction: column; /* Stack items vertically */
+  height: 100vh; /* Take up the full height of the viewport */
+  width: 100vw; /* Take up the full width of the viewport */
 }
 
 .roomSelection {
-  /* Add styles for the room selection tabs */
 }
 
 .mainContent {
   flex-grow: 1; /* Allow mainContent to fill available space */
   position: relative; /* Keep position as relative */
+}
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+  font-size: 25px;
+  color: #666;
+  text-align: center;
 }

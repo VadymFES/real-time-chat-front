@@ -71,13 +71,21 @@ export default function Home() {
     }
   };
 
+  const renderMainContent = () => {
+    if (selectedRoomId) {
+      return <MainContent selectedRoomId={selectedRoomId} selectedRoomName={selectedRoomName} />;
+    } else {
+      return <div className={styles.placeholder}>Please select a room to start chatting.</div>;
+    }
+  };
+
   return (
     <UserContext.Provider value={{ username, setUsername, setUserId, userId }}>
       <main className={styles.main}>
         {showRegistrationPopup && <RegistrationPopup onClose={closeRegistrationPopup} />}
         <RoomSelection onSelectRoom={handleRoomSelection} selectedRoom={selectedRoomName} />
         <div className={styles.mainContent}>
-          {selectedRoomId && <MainContent selectedRoomId={selectedRoomId} selectedRoomName={selectedRoomName} />}
+          {renderMainContent()}
         </div>
       </main>
     </UserContext.Provider>
