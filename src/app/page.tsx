@@ -1,7 +1,8 @@
-'use client';
+"use client"
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import styles from './page.module.css';
 import MainContent from '../components/mainContent/mainContent';
 import RegistrationPopup from '../components/popUpRegistration/RegistrationPopup';
@@ -14,37 +15,32 @@ export default function Home() {
   const [showRegistrationPopup, setShowRegistrationPopup] = useState(!localStorage.getItem('username') || !localStorage.getItem('userId'));
   const [selectedRoomName, setSelectedRoomName] = useState('');
   const [selectedRoomId, setSelectedRoomId] = useState('');
+  const [isAddTabOpen, setIsAddTabOpen] = useState(false);
 
   useEffect(() => {
-    // Retrieve the username, userId, selectedRoomName, and selectedRoomId from localStorage
     const storedUsername = localStorage.getItem('username');
     const storedUserId = localStorage.getItem('userId');
-    const storedSelectedRoomName = localStorage.getItem('selectedRoomName');
-    const storedSelectedRoomId = localStorage.getItem('selectedRoomId');
-
-    if (storedUsername && storedUserId) {
-      setUsername(storedUsername);
-      setUserId(storedUserId);
-    } else {
-      setShowRegistrationPopup(true); // Show registration popup if no user data
-      setSelectedRoomName('');
-      setSelectedRoomId('');
-      localStorage.removeItem('selectedRoomName');
-      localStorage.removeItem('selectedRoomId');
-    }
-
-    if (storedSelectedRoomName && storedSelectedRoomId) {
-      setSelectedRoomName(storedSelectedRoomName);
+    const storedSelectedRoomId = Cookies.get('selectedRoomId');
+    const storedSelectedRoomName = localStorage.getItem('selectedRoomName') || '';
+  
+    setUsername(storedUsername || '');
+    setUserId(storedUserId || '');
+    setShowRegistrationPopup(!storedUsername || !storedUserId);
+  
+    if (storedSelectedRoomId) {
       setSelectedRoomId(storedSelectedRoomId);
+      setSelectedRoomName(storedSelectedRoomName);
+      setIsAddTabOpen(storedSelectedRoomId === 'addTab');
     }
   }, []);
 
   const closeRegistrationPopup = () => {
     setShowRegistrationPopup(false);
-    setSelectedRoomName(''); 
+    setSelectedRoomName('');
     setSelectedRoomId('');
     localStorage.removeItem('selectedRoomName');
     localStorage.removeItem('selectedRoomId');
+    Cookies.remove('selectedRoomId');
   };
 
   const handleRoomSelection = async (roomName: string, roomId: string) => {
@@ -60,8 +56,10 @@ export default function Home() {
       await axios.post(`http://51.20.108.68/rooms/${parsedRoomId}/join?guest_id=${parsedUserId}`);
       setSelectedRoomName(roomName);
       setSelectedRoomId(roomId);
+      setIsAddTabOpen(false);
       localStorage.setItem('selectedRoomName', roomName);
       localStorage.setItem('selectedRoomId', roomId);
+      Cookies.set('selectedRoomId', roomId);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error joining the room:', error.response?.data || error.message);
@@ -71,8 +69,30 @@ export default function Home() {
     }
   };
 
+  const toggleAddTab = (isOpen: boolean) => {
+    setIsAddTabOpen(isOpen);
+    if (isOpen) {
+      setSelectedRoomName('');
+      setSelectedRoomId('addTab');
+      Cookies.set('selectedRoomId', 'addTab');
+    } else {
+      Cookies.remove('selectedRoomId');
+    }
+  };
+
   const renderMainContent = () => {
-    if (selectedRoomId) {
+    if (isAddTabOpen) {
+      return (
+        <div className={styles.createRoom}>
+          <h1 className={styles.chatNameNew}>Enter chat name</h1> 
+          <input type="text" className={styles.nameInputNew} />
+          <div className={styles.buttonContainer}>
+            <button type="reset" className={styles.buttonCancel}>Cancel</button>
+            <button type="submit" className={styles.buttonSubmit}>Create</button>
+          </div>
+        </div>
+      );
+    } else if (selectedRoomId && selectedRoomId !== 'addTab') {
       return <MainContent selectedRoomId={selectedRoomId} selectedRoomName={selectedRoomName} />;
     } else {
       return <div className={styles.placeholder}>Please select a room to start chatting.</div>;
@@ -83,7 +103,7 @@ export default function Home() {
     <UserContext.Provider value={{ username, setUsername, setUserId, userId }}>
       <main className={styles.main}>
         {showRegistrationPopup && <RegistrationPopup onClose={closeRegistrationPopup} />}
-        <RoomSelection onSelectRoom={handleRoomSelection} selectedRoom={selectedRoomName} />
+        <RoomSelection onSelectRoom={handleRoomSelection} selectedRoom={selectedRoomName} onAddTabToggle={toggleAddTab} />
         <div className={styles.mainContent}>
           {renderMainContent()}
         </div>

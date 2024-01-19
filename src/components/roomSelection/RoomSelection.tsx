@@ -4,6 +4,7 @@ import styles from './roomSelection.module.css';
 type RoomSelectionProps = {
   onSelectRoom: (roomName: string, roomId: string) => void;
   selectedRoom: string;
+  onAddTabToggle: (isOpen: boolean) => void;
 };
 
 interface Room {
@@ -13,11 +14,10 @@ interface Room {
   created_at: string; 
 }
 
-const RoomSelection = ({ onSelectRoom, selectedRoom }: RoomSelectionProps) => {
+const RoomSelection = ({ onSelectRoom, selectedRoom, onAddTabToggle }: RoomSelectionProps) => {
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [anyTabActive, setAnyTabActive] = useState(() => {
-    return localStorage.getItem('anyTabActive') === 'true';
-  });
+  
+  const [isAddTabActive, setIsAddTabActive] = useState(localStorage.getItem('isAddTabActive') === 'true');
 
   useEffect(() => {
     fetch('http://51.20.108.68/rooms/') 
@@ -27,39 +27,55 @@ const RoomSelection = ({ onSelectRoom, selectedRoom }: RoomSelectionProps) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('anyTabActive', anyTabActive.toString());
-  }, [anyTabActive]);
+    localStorage.setItem('isAddTabActive', isAddTabActive.toString());
+  }, [isAddTabActive]);
 
   const handleTabClick = (roomName: string, roomId: string) => {
     onSelectRoom(roomName, roomId);
-    setAnyTabActive(true);
+    setIsAddTabActive(false); 
+    onAddTabToggle(false); 
+  };
+
+  const handleAddTabClick = () => {
+    setIsAddTabActive(true); 
+    onAddTabToggle(true);
+  
+    localStorage.removeItem('selectedRoomId');
+    localStorage.removeItem('selectedRoomName');
   };
 
   return (
-    <><div className={styles.tabContainer}>
-      <section className={styles.topChatName}>
-        <div className={styles.tabHeader}>
-          <h1 className={styles.chatName}>Echo chat</h1>
-          <div className={styles.supportSettings}>
-            <button className={styles.support}>Support</button>
-            <button className={styles.settings}>Settings</button>
+    <>
+      <div className={styles.tabContainer}>
+        <section className={styles.topChatName}>
+          <div className={styles.tabHeader}>
+            <h1 className={styles.chatName}>Echo chat</h1>
+            <div className={styles.supportSettings}>
+              <button className={styles.support}>Support</button>
+              <button className={styles.settings}>Settings</button>
+            </div>
+            <p>userName writing...</p>
           </div>
-          <p>userName writing...</p>
-        </div>
-      </section>
-    </div>
-    <section className={styles.roomButtons}>
+        </section>
+      </div>
+      <section className={styles.roomButtons}>
         {rooms.map(room => (
           <button
             key={room.id}
             onClick={() => handleTabClick(room.name, room.id)}
-            className={`${styles.tab} ${anyTabActive ? styles.roundedTabs : ''} ${room.name === selectedRoom ? styles.activeTab : ''}`}
+            className={`${styles.tab} ${selectedRoom === room.name ? styles.activeTab : ''}`}
           >
             {room.name}
           </button>
         ))}
-        <button className={`${styles.tab} ${anyTabActive ? styles.roundedTabs : ''}`}>+</button>
-      </section></>
+        <button 
+          className={`${styles.addTab} ${isAddTabActive ? styles.activeTab : ''}`}
+          onClick={handleAddTabClick}
+        >
+          +
+        </button>
+      </section>
+    </>
   );
 };
 
