@@ -20,7 +20,7 @@ const RoomSelection = ({ onSelectRoom, selectedRoom, onAddTabToggle }: RoomSelec
   const [isAddTabActive, setIsAddTabActive] = useState(localStorage.getItem('isAddTabActive') === 'true');
 
   useEffect(() => {
-    fetch('http://51.20.108.68/rooms/') 
+    fetch('http://localhost:7000/rooms/') 
       .then(response => response.json())
       .then(data => setRooms(data))
       .catch(error => console.error('Error fetching rooms:', error));

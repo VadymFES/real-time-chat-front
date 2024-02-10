@@ -50,7 +50,7 @@ const MembersList: React.FC<MembersListProps> = ({ selectedRoomId }) => {
     const roomId = parseInt(selectedRoomId, 10); // Convert the room ID to an integer
     if (!isNaN(roomId)) {
       try {
-        const response = await axios.get(`http://51.20.108.68/rooms/${roomId}/users`);
+        const response = await axios.get(`http://localhost:7000/rooms/${roomId}/users`);
         if (response && response.data) {
           setMembers(response.data);
         }
