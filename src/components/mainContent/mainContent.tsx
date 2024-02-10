@@ -5,10 +5,8 @@ import styles from './mainContent.module.css';
 import MessageHistory from './chatHistory/MessageHistory';
 import autosize from 'autosize';
 import AddMessage from '../addMessage/addMessage';
-import { v4 as uuidv4 } from 'uuid';
 import MembersList from '../membersList/MembersList';
 import UserContext from '../../contexts/UserContext';
-import axios from 'axios';
 
 
 interface Message {
