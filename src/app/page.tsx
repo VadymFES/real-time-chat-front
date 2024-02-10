@@ -16,8 +16,13 @@ export default function Home() {
   const [selectedRoomName, setSelectedRoomName] = useState('');
   const [selectedRoomId, setSelectedRoomId] = useState('');
   const [isAddTabOpen, setIsAddTabOpen] = useState(false);
+  const [newRoomName, setNewRoomName] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [description, setDescription] = useState('');
 
   useEffect(() => {
+    fetchCategories();
     const storedUsername = localStorage.getItem('username');
     const storedUserId = localStorage.getItem('userId');
     const storedSelectedRoomId = Cookies.get('selectedRoomId');
@@ -33,6 +38,15 @@ export default function Home() {
       setIsAddTabOpen(storedSelectedRoomId === 'addTab');
     }
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('http://localhost:7000/categories');
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const closeRegistrationPopup = () => {
     setShowRegistrationPopup(false);
@@ -53,7 +67,7 @@ export default function Home() {
         return;
       }
 
-      await axios.post(`http://51.20.108.68/rooms/${parsedRoomId}/join?guest_id=${parsedUserId}`);
+      await axios.post(`http://localhost:7000/rooms/${parsedRoomId}/join?guest_id=${parsedUserId}`);
       setSelectedRoomName(roomName);
       setSelectedRoomId(roomId);
       setIsAddTabOpen(false);
@@ -69,15 +83,33 @@ export default function Home() {
     }
   };
 
-  const toggleAddTab = (isOpen: boolean) => {
-    setIsAddTabOpen(isOpen);
-    if (isOpen) {
-      setSelectedRoomName('');
-      setSelectedRoomId('addTab');
-      Cookies.set('selectedRoomId', 'addTab');
-    } else {
-      Cookies.remove('selectedRoomId');
+  const createRoom = async () => {
+    try {
+      console.log('Creating room with name:', newRoomName);
+      const url = `http://localhost:7000/rooms/create?room_name=${encodeURIComponent(newRoomName)}&category_id=${selectedCategory}&description=${encodeURIComponent(description)}`;
+      const response = await axios.post(url);
+      const { room_id } = response.data;
+      setSelectedRoomName(newRoomName);
+      setSelectedRoomId(room_id);
+      Cookies.set('selectedRoomId', room_id);
+      setIsAddTabOpen(false);
+    } catch (error) {
+      console.error('Error creating the room:', error.response?.data || error.message);
     }
+  };
+  
+
+  const toggleAddTab = (isOpen: boolean | ((prevState: boolean) => boolean)) => {
+    setIsAddTabOpen(isOpen);
+    if (!isOpen) {
+      setNewRoomName('');
+      setSelectedCategory('');
+      setDescription('');
+    }
+  };
+
+  const handleCategoryChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSelectedCategory(e.target.value);
   };
 
   const renderMainContent = () => {
@@ -85,10 +117,19 @@ export default function Home() {
       return (
         <div className={styles.createRoom}>
           <h1 className={styles.chatNameNew}>Enter chat name</h1> 
-          <input type="text" className={styles.nameInputNew} />
+          <input type="text" className={styles.nameInputNew} value={newRoomName} onChange={(e) => setNewRoomName(e.target.value)} />
+          <h1 className={styles.chatNameNew}>Select Category</h1>
+          <select value={selectedCategory} onChange={handleCategoryChange}>
+            <option value="">Select a category</option>
+            {categories.map((category: { id: string, name: string }) => (
+              <option key={category.id} value={category.id}>{category.name}</option>
+            ))}
+          </select>
+          <h1 className={styles.chatNameNew}>Enter Description</h1>
+          <input type="text" className={styles.nameInputNew} value={description} onChange={(e) => setDescription(e.target.value)} />
           <div className={styles.buttonContainer}>
-            <button type="reset" className={styles.buttonCancel}>Cancel</button>
-            <button type="submit" className={styles.buttonSubmit}>Create</button>
+            <button type="reset" className={styles.buttonCancel} onClick={() => toggleAddTab(false)}>Cancel</button>
+            <button type="submit" className={styles.buttonSubmit} onClick={createRoom}>Create</button>
           </div>
         </div>
       );
