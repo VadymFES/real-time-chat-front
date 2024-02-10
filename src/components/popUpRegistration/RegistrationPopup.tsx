@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import UserContext from '../../contexts/UserContext';
-import styles from './RegistrationPopup.module.css'; 
+import styles from './RegistrationPopup.module.css';
 
 interface RegistrationPopupProps {
   onClose: () => void;
@@ -27,18 +28,21 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
     
     try {
       setIsLoading(true);
-      const postResponse = await axios.post(`http://51.20.108.68/guests/create`, { name: username }, { withCredentials: true });
+      const postResponse = await axios.post(`http://localhost:7000/guests/create`, { name: username }, { withCredentials: true });
       console.log('Registration Response:', postResponse.data); 
-      console.log('Headers:', postResponse.headers);
 
+      const userId = postResponse.data.id;
+      const userUuid = postResponse.data.uuid;
   
-      const userId = postResponse.data.id; 
       setGlobalUsername(username);
       setGlobalUserId(userId);
   
-
+      // Save username and userId to localStorage
       localStorage.setItem('username', username);
       localStorage.setItem('userId', userId.toString());
+  
+      // Save UUID to cookies
+      Cookies.set('userUuid', userUuid, { expires: 7 }); // Expires in 7 days
   
       onClose();
     } catch (error: any) {
@@ -49,12 +53,6 @@ const RegistrationPopup: React.FC<RegistrationPopupProps> = ({ onClose }) => {
     }
   };
   
-  
-  
-
-
-  
-
   return (
     <>
       <div className={styles.backdrop} />
