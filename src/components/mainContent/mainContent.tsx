@@ -21,52 +21,39 @@ interface Message {
 const MainContent: React.FC<{ selectedRoomId: string, selectedRoomName: string }> = ({ selectedRoomId, selectedRoomName }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const { username } = useContext(UserContext);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
 
   useEffect(() => {
     autosize(document.querySelectorAll('textarea'));
   }, []);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const response = await axios.get(`http://51.20.108.68/messages/get_room_messages/${selectedRoomId}`);
-        const newMessages = response.data;
-        // console.log(response);
 
-        setMessages(prevMessages => {
-          const newUniqueMessages = newMessages.filter((newMsg: { id: string; }) => 
-            !prevMessages.some(prevMsg => prevMsg.id === newMsg.id));
-          return [...prevMessages, ...newUniqueMessages];
-        });
-      } catch (error) {
-        console.error('Error fetching messages:', error);
+    // Create a new WebSocket connection when selectedRoomId changes
+    const newSocket = new WebSocket(`ws://localhost:3000/rooms/${selectedRoomId}`);
+    setSocket(newSocket);
+
+    newSocket.onmessage = (event) => {
+      const message: Message = JSON.parse(event.data);
+      setMessages(prevMessages => [...prevMessages, message]);
+    };
+
+    newSocket.onopen = () => {
+      console.log("WebSocket connected!");
+    };
+
+    newSocket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+
+    return () => {
+      if (newSocket.readyState === 1) { // <-- This is important
+        newSocket.close();
       }
-    };
+  }
 
-    if (selectedRoomId) {
-      fetchMessages();
-
-      const intervalId = setInterval(fetchMessages, 5000);
-      return () => clearInterval(intervalId);
-    }
-  }, [selectedRoomId]);
-
-  const handleSendMessage = (newMessageText: string) => {
-    const currentTime = new Date();
-    const hours = currentTime.getHours().toString().padStart(2, '0');
-    const minutes = currentTime.getMinutes().toString().padStart(2, '0');
-    const timestamp = `${hours}:${minutes}`;
-    
-
-    const newMessage: Message = {
-      id: uuidv4(),
-      text: newMessageText,
-      sender: username, 
-      timestamp: timestamp, 
-    };
-    setMessages([...messages, newMessage]);
-  };
-
+  }, [selectedRoomId]);;
 
   return (
     <div className={styles.chatContainer}>
@@ -83,7 +70,7 @@ const MainContent: React.FC<{ selectedRoomId: string, selectedRoomName: string }
             <MembersList selectedRoomId={selectedRoomId} />
           </section>
           <section className={styles.AddMessage}>
-          <AddMessage currentUser={username} selectedRoomId={selectedRoomId} />
+            <AddMessage currentUser={username} selectedRoomId={selectedRoomId} socket={socket} />
           </section>
         </>
       )}
