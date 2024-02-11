@@ -17,9 +17,12 @@ interface Room {
 const RoomSelection = ({ onSelectRoom, selectedRoom, onAddTabToggle }: RoomSelectionProps) => {
   const [rooms, setRooms] = useState<Room[]>([]);
   
-  const [isAddTabActive, setIsAddTabActive] = useState(localStorage.getItem('isAddTabActive') === 'true');
+  const [isAddTabActive, setIsAddTabActive] = useState(false);
 
   useEffect(() => {
+    const isAddTabActiveFromStorage = localStorage.getItem('isAddTabActive') === 'true';
+    setIsAddTabActive(isAddTabActiveFromStorage);
+
     fetch('http://localhost:7000/rooms/') 
       .then(response => response.json())
       .then(data => setRooms(data))

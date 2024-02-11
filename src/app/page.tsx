@@ -12,7 +12,7 @@ import RoomSelection from '../components/roomSelection/RoomSelection';
 export default function Home() {
   const [username, setUsername] = useState('');
   const [userId, setUserId] = useState('');
-  const [showRegistrationPopup, setShowRegistrationPopup] = useState(!localStorage.getItem('username') || !localStorage.getItem('userId'));
+  const [showRegistrationPopup, setShowRegistrationPopup] = useState(true);
   const [selectedRoomName, setSelectedRoomName] = useState('');
   const [selectedRoomId, setSelectedRoomId] = useState('');
   const [isAddTabOpen, setIsAddTabOpen] = useState(false);
@@ -93,7 +93,7 @@ export default function Home() {
       setSelectedRoomId(room_id);
       Cookies.set('selectedRoomId', room_id);
       setIsAddTabOpen(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating the room:', error.response?.data || error.message);
     }
   };
